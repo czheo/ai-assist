@@ -1,6 +1,12 @@
 A command-line AI assist that can do math, search, run Python and shell command.
 **Under experiment. Use at your own risks.**
 
+# Install
+
+```
+pip install ai-assist
+```
+
 # Setup
 You will need put the following environment variables in a `.env` file in your home directory.
 
