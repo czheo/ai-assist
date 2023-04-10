@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "ai-assist"
+version = "0.0.1"
+description = ""
+authors = ["czheo <1692400+czheo@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "ai_assist"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+langchain = "^0.0.136"
+openai = "^0.27.4"
+google-api-python-client = "^2.84.0"
+python-dotenv = "^1.0.0"
+tiktoken = "^0.3.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+ai = "ai_assist.ai:cli"
