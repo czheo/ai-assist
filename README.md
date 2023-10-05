@@ -1,6 +1,8 @@
 A command-line AI assist that can do math, search, run Python and shell command.
 **Under experiment. Use at your own risks.**
 
+![screenshot](image.png)
+
 # Install
 
 ```
