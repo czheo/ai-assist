@@ -1,4 +1,5 @@
 import os
+from argparse import ArgumentParser
 from langchain.llms import OpenAI
 from langchain.agents import Tool
 from langchain.memory import ConversationSummaryBufferMemory
@@ -10,13 +11,14 @@ from langchain.agents import load_tools
 from langchain.tools.python.tool import PythonREPLTool
 from langchain.utilities import BashProcess
 from dotenv import load_dotenv
+from termcolor import colored
 
 
 GOOGLE_SEARCH_LIMIT = 10
 MEMORY_MAX_TOKEN_LIMIT = 300
 
 
-def setup():
+def setup(model_name, verbose):
     load_dotenv(os.path.expanduser("~/.env"))
     search = GoogleSearchAPIWrapper(k=GOOGLE_SEARCH_LIMIT)
     bash = BashProcess()
@@ -37,25 +39,29 @@ def setup():
         ),
     ])
 
-    llm = ChatOpenAI(temperature=0.7)
-    return initialize_agent(tools, llm, agent=AgentType.CHAT_CONVERSATIONAL_REACT_DESCRIPTION, verbose=True, memory=memory)
+    llm = ChatOpenAI(temperature=0.7, model_name=model_name)
+    return initialize_agent(tools, llm, agent=AgentType.CONVERSATIONAL_REACT_DESCRIPTION, verbose=verbose, memory=memory)
 
 
 def interact(agent_chain):
-    print("""Welcome to the AI.
+    print(colored("""Welcome to the AI.
 I do math, search, run python/bash and more.
-Type 'exit' to quit.""")
+Type 'exit' to quit.""", color = 'green'))
     while True:
         user_input = input('[USER]<< ').strip()
         if user_input in ("exit", ":q", "quit"):
             break
         try:
             response = agent_chain.run(user_input)
-            print('[AI]>>', response)
+            print(colored('[AI]>> ' + response, color = 'green'))
         except Exception as e:
-            print("ERROR: ", e)
+            print(colored("ERROR: \n" + e, color = 'red'))
 
 
 def cli():
-    agent_chain = setup()
+    parser = ArgumentParser()
+    parser.add_argument("--verbose", action="store_true")
+    parser.add_argument("--model", default="gpt-4", help="OpenAI model name: https://platform.openai.com/docs/models/")
+    args = parser.parse_args()
+    agent_chain = setup(args.model, args.verbose)
     interact(agent_chain)
