@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ai-assist"
-version = "0.0.1"
+version = "0.0.2"
 description = ""
 authors = ["czheo <1692400+czheo@users.noreply.github.com>"]
 readme = "README.md"
